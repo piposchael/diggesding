@@ -21,7 +21,7 @@ public class CharacterStats implements Serializable {
     
     private static final int INDIKATOR_GESCHICK_PRO_LEVEL = 3;
     
-    private static final int INDIKATOR_LEBEN_PRO_LEVEL = 5;
+    private static final int INDIKATOR_LEBEN_PRO_LEVEL = 50;
     
     private int geschick;
     
