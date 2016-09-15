@@ -13,6 +13,16 @@ import java.io.Serializable;
  */
 public class CharacterStats implements Serializable {
     
+    private static final int INDIKATOR_KRAFT_PRO_LEVEL = 5;
+    
+    private static final int INDIKATOR_SCHNELLIGKEIT_PRO_LEVEL = 2;
+    
+    private static final int INDIKATOR_WISSEN_PRO_LEVEL = 1;
+    
+    private static final int INDIKATOR_GESCHICK_PRO_LEVEL = 3;
+    
+    private static final int INDIKATOR_LEBEN_PRO_LEVEL = 5;
+    
     private int geschick;
     
     private int wissen;
@@ -36,7 +46,7 @@ public class CharacterStats implements Serializable {
         this.lebenspunkte = leben;
         this.schnelligkeit = schnelligkeit;
         this.level = level;
-        this.erfahrungspunkte = 500;
+        this.erfahrungspunkte = 0;
     }
     
     /*
@@ -51,6 +61,12 @@ public class CharacterStats implements Serializable {
             
             this.level++;
             this.erfahrungspunkte = gesamtLevelEp - epToLvlUp;
+            this.kraft += INDIKATOR_KRAFT_PRO_LEVEL;
+            this.geschick += INDIKATOR_GESCHICK_PRO_LEVEL;
+            this.schnelligkeit += INDIKATOR_SCHNELLIGKEIT_PRO_LEVEL;
+            this.wissen += INDIKATOR_WISSEN_PRO_LEVEL;
+            this.lebenspunkte += INDIKATOR_LEBEN_PRO_LEVEL;
+            
             System.out.println("Level up! \n Level: " + this.level);
         }else{
             this.erfahrungspunkte = gesamtLevelEp;

@@ -69,7 +69,7 @@ public class Avatar extends Observable implements Serializable{
         this.monsterHinzufuegen(avatarMonster);
         this.inventar = new int[ANZAHL_VERSCHIEDENER_ITEMS];
         
-        this.stats = new CharacterStats(100,100,100,100,100,1);
+        this.stats = new CharacterStats(0,0,15,100,0,1);
         
         inventar[0] = ANZAHL_KLEINE_HEILTRAENKE;
         inventar[1] = ANZAHL_POKEBAELLE;
