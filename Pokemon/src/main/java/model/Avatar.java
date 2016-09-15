@@ -87,6 +87,11 @@ public class Avatar extends Observable implements Serializable{
         this.informiereObserver();
     }
     
+    public void CheckLevel(int ep){
+        this.stats.checkLevelUp(ep);
+        this.informiereObserver();
+    }
+    
     /**
      * Fügt dem Inventar einen kleinen Heiltrank hinzu.
      */

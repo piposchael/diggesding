@@ -240,7 +240,7 @@ public class Spielfeld extends Observable implements Serializable {
     private void pruefeNeuesFeld() {
         if (vordergrund[posX][posY] == HEILFELD) {
             //this.avatar.heilen();
-            this.avatar.getCharacterStats().checkLevelUp(100);
+            this.avatar.CheckLevel(100);
             /*
             * noch statischer Kartenwechsel
             */

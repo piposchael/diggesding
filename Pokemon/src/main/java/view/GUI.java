@@ -7,6 +7,7 @@ import java.util.Observer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -148,6 +149,8 @@ public class GUI implements Observer, Serializable {
     private ProgressBar epBar;
     
     private HBox hbox;
+    
+    private Label levelLabel;
     /**
      * Konstruktor der GUI. Baut die Menüleiste und das GridPane auf und
      * positioniert sie mit Hilfe eines BorderPane.
@@ -187,9 +190,10 @@ public class GUI implements Observer, Serializable {
         hbox.setAlignment(Pos.CENTER);
         hbox.setMaxSize(FENSTER_HOEHE, 25);
         
+        levelLabel = new Label("1");
         epBar = new ProgressBar(1.0);
         epBar.prefWidthProperty().bind(hbox.widthProperty().subtract(20));
-        hbox.getChildren().add(epBar);
+        hbox.getChildren().addAll(levelLabel, epBar);
         
         this.root = new BorderPane(grid, menuBar, null, null, null);
         this.root.setBottom(hbox);
@@ -330,6 +334,7 @@ public class GUI implements Observer, Serializable {
             kampf.fire();
         }
         //EPLeiste
+        this.levelLabel.setText("" + controller.getAvatar().getCharacterStats().getLevel());
         this.epBar.setProgress((double) controller.getAvatar().getCharacterStats().getErfahrungspunkte()/
                 this.controller.getAvatar().getCharacterStats().calcFullLevelEp(this.controller.getAvatar()
                 .getCharacterStats().getLevel()));

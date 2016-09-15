@@ -48,8 +48,10 @@ public class CharacterStats implements Serializable {
         int gesamtLevelEp = this.erfahrungspunkte + ep;
         
         if(gesamtLevelEp >= epToLvlUp){
+            
             this.level++;
             this.erfahrungspunkte = gesamtLevelEp - epToLvlUp;
+            System.out.println("Level up! \n Level: " + this.level);
         }else{
             this.erfahrungspunkte = gesamtLevelEp;
         }
