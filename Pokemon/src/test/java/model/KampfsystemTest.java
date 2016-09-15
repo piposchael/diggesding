@@ -6,7 +6,7 @@
 package model;
 
 import control.KampfSteuerung;
-import control.Steuerung;
+import control.SpielSteuerung;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
@@ -59,7 +59,7 @@ public class KampfsystemTest {
     /**
      * Die Steurung.
      */
-    private Steuerung steurung;
+    private SpielSteuerung steurung;
     /**
      * String Angriff.
      */
@@ -81,7 +81,7 @@ public class KampfsystemTest {
      */
     public KampfsystemTest() {
         this.monsterListe = new MonsterListe();
-        this.steurung = new Steuerung();
+        this.steurung = new SpielSteuerung();
         this.kampfSteuerung = steurung.getKampfSteuerung();
         this.avatar = steurung.getAvatar(); 
         this.kampfsystem = new Kampfsystem(kampfSteuerung, avatar);

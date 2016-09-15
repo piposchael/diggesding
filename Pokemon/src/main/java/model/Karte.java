@@ -5,11 +5,13 @@
  */
 package model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pippn
  */
-public class Karte {
+public class Karte implements Serializable {
     
     private static final String BERLIN = "Berlin";
     

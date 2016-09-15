@@ -101,7 +101,7 @@ public class KampfSteuerung implements EventHandler, Serializable {
         else if(!this.kampfsystem.isGefangen()){
             this.kampfsystem.getGegnerMonster().setLebensPunkte(MAX_LEBENSPUNKTE);
         }
-        this.gui.show();
+        this.gui.show(this.gui.getPrimaryStage());
         this.avatar.informiereObserver();
         this.kampfsystem.updateObserver();
         this.kampfsystem.nachKampfAufrauemen();

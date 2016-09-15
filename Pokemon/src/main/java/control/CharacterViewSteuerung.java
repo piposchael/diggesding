@@ -46,7 +46,7 @@ public class CharacterViewSteuerung implements Serializable, EventHandler{
             System.exit(0);
         }
         if(event.getSource() == this.charView.getZurueck()){
-            this.gui.show();
+            this.gui.show(this.gui.getPrimaryStage());
         }
     }
     

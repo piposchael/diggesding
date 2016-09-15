@@ -1,13 +1,10 @@
 package control;
 
 import java.io.Serializable;
-import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.Avatar;
 import model.Monster;
 import model.MonsterListe;
@@ -24,7 +21,7 @@ import view.KampfView;
  *
  * @author Agirman
  */
-public class Steuerung extends Application implements EventHandler, Serializable {
+public class SpielSteuerung implements EventHandler, Serializable {
 
     /**
      * Variable für GUI.
@@ -79,11 +76,8 @@ public class Steuerung extends Application implements EventHandler, Serializable
      */
     private Spielstand spielstand;
 
-    /**
-     * Konstruktor.
-     */
-    public Steuerung() {
-    }
+    
+    
 
     /**
      * Startet die GUI + startet das Model + fuegt dem Model die Gui als
@@ -92,18 +86,22 @@ public class Steuerung extends Application implements EventHandler, Serializable
      *
      * @param primaryStage Stage
      * @throws Exception Wirft allgemeine Exception.
-     */
+     *
     @Override
-    public void start(final Stage primaryStage) throws Exception {
+    /*public void start(final Stage primaryStage) throws Exception {
         
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 System.exit(0);
             }
-        });
-
-        this.gui = new GUI(primaryStage, this);
+        });*/
+    /**
+     * Konstruktor.
+     */
+    public SpielSteuerung() {
+    
+        this.gui = new GUI(this);
 
         this.monsterliste = new MonsterListe();
 
@@ -134,21 +132,31 @@ public class Steuerung extends Application implements EventHandler, Serializable
     }
 
     /**
-     * Initialisiert die Steuerung mit aus einem Spielstand geladenem Spielfeld,
-     * Avatar und Monsterliste.
+     * Initialisiert die SpielSteuerung mit aus einem Spielstand geladenem Spielfeld,
+ Avatar und Monsterliste.
      */
-    private void mitGeladenemSpielstandInitialisieren() {
-        this.spielfeld.setAufKampfFeld(false);
-        this.spielfeld.addObserver(this.gui);
-        this.itemView = new ItemView();
-        this.itemViewSteuerung = new ItemViewSteuerung(this.avatar, this.itemView, this.gui);
-        this.monsterView = new MonsterView();
-        this.monsterViewSteuerung = new MonsterViewSteuerung(
-                this.avatar, this.monsterView, this.gui);
-        this.kampfView = new KampfView(this.avatar);
-        this.kampfSteuerung = new KampfSteuerung(
-                this.avatar, this.kampfView, this.gui, this.monsterliste);
-        this.gui.update(this.spielfeld, null);
+    public void mitGeladenemSpielstandInitialisieren() {
+        
+        this.spielstand = Spielstand.spielstandLaden();
+            if (this.spielstand != null) {
+                this.monsterliste = this.spielstand.getMonsterliste();
+                this.avatar = this.spielstand.getAvatar();
+                this.spielfeld = this.spielstand.getSpielfeld();
+            
+                this.spielfeld.setAufKampfFeld(false);
+                this.spielfeld.addObserver(this.gui);
+                this.itemView = new ItemView();
+                this.itemViewSteuerung = new ItemViewSteuerung(this.avatar, this.itemView, this.gui);
+                this.monsterView = new MonsterView();
+                this.monsterViewSteuerung = new MonsterViewSteuerung(
+                        this.avatar, this.monsterView, this.gui);
+                this.kampfView = new KampfView(this.avatar);
+                this.kampfSteuerung = new KampfSteuerung(
+                        this.avatar, this.kampfView, this.gui, this.monsterliste);
+                this.gui.update(this.spielfeld, null);
+        }else{
+                System.out.println("Du hast noch keinen Spielstand!");
+        }
     }
 
     @Override
@@ -186,13 +194,9 @@ public class Steuerung extends Application implements EventHandler, Serializable
             this.spielstand.speichern(spielstand);
         }
         if (event.getSource() == this.gui.getLaden()) {
-            this.spielstand = Spielstand.spielstandLaden();
-            if (this.spielstand != null) {
-                this.monsterliste = this.spielstand.getMonsterliste();
-                this.avatar = this.spielstand.getAvatar();
-                this.spielfeld = this.spielstand.getSpielfeld();
+            
                 mitGeladenemSpielstandInitialisieren();
-            }
+            
         }
     }
 

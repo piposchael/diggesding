@@ -1,7 +1,6 @@
 package view;
 
-import control.Steuerung;
-import java.awt.Color;
+import control.SpielSteuerung;
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
@@ -11,10 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Feld;
 import static model.Feld.MONSTERSAMMLER;
@@ -45,7 +45,7 @@ public class GUI implements Observer, Serializable {
     /**
      * Hoehe des Fensters.
      */
-    private static final int FENSTER_HOEHE = 530;
+    private static final int FENSTER_HOEHE = 550;
     /**
      * Breite des Fensters.
      */
@@ -85,7 +85,7 @@ public class GUI implements Observer, Serializable {
     /**
      * Referenz auf den Controller.
      */
-    private final Steuerung controller;
+    private final SpielSteuerung controller;
     /**
      * Menüknopf.
      */
@@ -144,7 +144,10 @@ public class GUI implements Observer, Serializable {
     private ImageView[][] avatarView;
     
     private BorderPane root;
-
+    
+    private ProgressBar epBar;
+    
+    private HBox hbox;
     /**
      * Konstruktor der GUI. Baut die Menüleiste und das GridPane auf und
      * positioniert sie mit Hilfe eines BorderPane.
@@ -152,9 +155,8 @@ public class GUI implements Observer, Serializable {
      * @param primaryStage Referenz auf die primaryStage.
      * @param c Referenz auf den Controller.
      */
-    public GUI(final Stage primaryStage, final Steuerung c) {
+    public GUI(final SpielSteuerung c) {
 
-        this.primaryStage = primaryStage;
         this.controller = c;
 
         menuBar = new MenuBar();
@@ -179,15 +181,29 @@ public class GUI implements Observer, Serializable {
         menu1.getItems().addAll(charStats,inventar, monster, speichern, laden, beenden);
 
         initGrid();
-
+        
+        hbox = new HBox();
+        hbox.setSpacing(5);
+        hbox.setAlignment(Pos.CENTER);
+        hbox.setMaxSize(FENSTER_HOEHE, 25);
+        
+        epBar = new ProgressBar(1.0);
+        epBar.prefWidthProperty().bind(hbox.widthProperty().subtract(20));
+        hbox.getChildren().add(epBar);
+        
         this.root = new BorderPane(grid, menuBar, null, null, null);
+        this.root.setBottom(hbox);
+        
+        
 
         this.spielfeldScene = new Scene(root, FENSTER_BREITE, FENSTER_HOEHE);
         this.spielfeldScene.setOnKeyPressed(this.controller);
 
-        this.primaryStage.setTitle(TITLE);
-        this.primaryStage.setScene(spielfeldScene);
-        this.primaryStage.show();
+        //spielfeldScene.getChildren().add(hbox);
+        //spielfeldScene.setRoot(hbox);
+        //this.primaryStage.setTitle(TITLE);
+        //this.primaryStage.setScene(spielfeldScene);
+        //this.primaryStage.show();
     }
     
     /**
@@ -226,8 +242,10 @@ public class GUI implements Observer, Serializable {
 
     /**
      * Zeigt wieder die spielfeldScene an.
+     * @param primaryStage
      */
-    public void show() {
+    public void show(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         this.primaryStage.setTitle(TITLE);
         this.primaryStage.setScene(this.spielfeldScene);
         this.primaryStage.show();
@@ -269,11 +287,11 @@ public class GUI implements Observer, Serializable {
     /**
      * Wird durch Änderungen im Spielfeld ausgelöst und aktualisiert die
      * Anzeige. Holt die aktuellen Hintergrund und Vordergrund Arrays aus dem
-     * Model und fügt sie nacheinander in das GridPane ein. Dann wird die
-     * aktuelle Position des Avatars aus dem Model abgefragt und dieser im
-     * GridPane platziert. Als letztes wird abgefragt, ob sich der Avatar auf
-     * einem Kampf-Feld befindet und gegebenenfalls ein entsprechendes ActionEvent
-     * in der Steuerung ausgelöst.
+ Model und fügt sie nacheinander in das GridPane ein. Dann wird die
+ aktuelle Position des Avatars aus dem Model abgefragt und dieser im
+ GridPane platziert. Als letztes wird abgefragt, ob sich der Avatar auf
+ einem Kampf-Feld befindet und gegebenenfalls ein entsprechendes ActionEvent
+ in der SpielSteuerung ausgelöst.
      *
      * @param o Das Spielfeld
      * @param arg leer
@@ -311,6 +329,10 @@ public class GUI implements Observer, Serializable {
         if (spielfeld.isAufKampfFeld()) {
             kampf.fire();
         }
+        //EPLeiste
+        this.epBar.setProgress((double) controller.getAvatar().getCharacterStats().getErfahrungspunkte()/
+                this.controller.getAvatar().getCharacterStats().calcFullLevelEp(this.controller.getAvatar()
+                .getCharacterStats().getLevel()));
     }
 
     /**

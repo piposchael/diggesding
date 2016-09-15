@@ -56,7 +56,7 @@ public class ItemViewSteuerung implements EventHandler, Serializable {
             System.exit(0);
         }
         if(event.getSource() == this.itemView.getZurueck()){
-            this.gui.show();
+            this.gui.show(this.gui.getPrimaryStage());
         }
     }
 }

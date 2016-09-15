@@ -36,7 +36,7 @@ public class CharacterStats implements Serializable {
         this.lebenspunkte = leben;
         this.schnelligkeit = schnelligkeit;
         this.level = level;
-        this.erfahrungspunkte = 0;
+        this.erfahrungspunkte = 500;
     }
     
     /*
@@ -44,7 +44,7 @@ public class CharacterStats implements Serializable {
     * Prüft ob Level up, wenn ja, dann setzte Level up und EP-Berechnung.
     */
     public void checkLevelUp(int ep){
-        int epToLvlUp = this.level * 1000;
+        int epToLvlUp = calcFullLevelEp(this.level);
         int gesamtLevelEp = this.erfahrungspunkte + ep;
         
         if(gesamtLevelEp >= epToLvlUp){
@@ -53,6 +53,13 @@ public class CharacterStats implements Serializable {
         }else{
             this.erfahrungspunkte = gesamtLevelEp;
         }
+    }
+    
+    public int calcFullLevelEp(int level){
+        
+        int epToLevelUp = level * 1000;
+        
+        return epToLevelUp;
     }
 
     /**
@@ -136,5 +143,19 @@ public class CharacterStats implements Serializable {
      */
     public void setSchnelligkeit(int schnelligkeit) {
         this.schnelligkeit = schnelligkeit;
+    }
+    
+    /**
+     * @return the Ehrfahrungspunkte
+     */
+    public int getErfahrungspunkte() {
+        return erfahrungspunkte;
+    }
+
+    /**
+     * @param ep the Erfahrungspunkte to set
+     */
+    public void setErfahrungspunkte(int ep) {
+        this.erfahrungspunkte = ep;
     }
 }

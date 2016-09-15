@@ -91,6 +91,7 @@ public class Spielstand implements Serializable {
 
             ois.close();
             fis.close();
+            System.out.println("Spielstand geladen!");
 
         } catch (FileNotFoundException ex) {
             System.out.println("FileNotFoundException!");

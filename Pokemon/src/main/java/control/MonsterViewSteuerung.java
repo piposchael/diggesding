@@ -104,7 +104,7 @@ public class MonsterViewSteuerung implements EventHandler, Serializable {
             System.exit(0);
         }
         if (event.getSource() == this.monsterView.getZurueck()) {
-            this.gui.show();
+            this.gui.show(this.gui.getPrimaryStage());
         }
         if(event.getSource() == this.monsterView.getMonster1()){
             if(this.avatar.getMonsterBeutel().size() > INDEX_MONSTER_1){
