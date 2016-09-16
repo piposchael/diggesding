@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Feld;
 import static model.Feld.MONSTERSAMMLER;
@@ -46,7 +47,7 @@ public class GUI implements Observer, Serializable {
     /**
      * Hoehe des Fensters.
      */
-    private static final int FENSTER_HOEHE = 550;
+    private static final int FENSTER_HOEHE = 570;
     /**
      * Breite des Fensters.
      */
@@ -150,12 +151,15 @@ public class GUI implements Observer, Serializable {
     
     private HBox hbox;
     
+    private VBox vbox;
+    
     private Label levelLabel;
+    
+    private Label statusLabel;
     /**
      * Konstruktor der GUI. Baut die Menüleiste und das GridPane auf und
      * positioniert sie mit Hilfe eines BorderPane.
      *
-     * @param primaryStage Referenz auf die primaryStage.
      * @param c Referenz auf den Controller.
      */
     public GUI(final SpielSteuerung c) {
@@ -187,27 +191,26 @@ public class GUI implements Observer, Serializable {
         
         hbox = new HBox();
         hbox.setSpacing(5);
-        hbox.setAlignment(Pos.CENTER);
+        hbox.setAlignment(Pos.TOP_CENTER);
         hbox.setMaxSize(FENSTER_HOEHE, 25);
         
+        vbox = new VBox();
+        vbox.setMaxSize(FENSTER_HOEHE, 50);
+        
+        statusLabel = new Label("");
         levelLabel = new Label("1");
+        levelLabel.setAlignment(Pos.CENTER);
         epBar = new ProgressBar(1.0);
         epBar.prefWidthProperty().bind(hbox.widthProperty().subtract(20));
         hbox.getChildren().addAll(levelLabel, epBar);
         
+        vbox.getChildren().addAll(hbox, statusLabel);
+        
         this.root = new BorderPane(grid, menuBar, null, null, null);
-        this.root.setBottom(hbox);
-        
-        
+        this.root.setBottom(vbox);
 
         this.spielfeldScene = new Scene(root, FENSTER_BREITE, FENSTER_HOEHE);
         this.spielfeldScene.setOnKeyPressed(this.controller);
-
-        //spielfeldScene.getChildren().add(hbox);
-        //spielfeldScene.setRoot(hbox);
-        //this.primaryStage.setTitle(TITLE);
-        //this.primaryStage.setScene(spielfeldScene);
-        //this.primaryStage.show();
     }
     
     /**
@@ -338,6 +341,7 @@ public class GUI implements Observer, Serializable {
         this.epBar.setProgress((double) controller.getAvatar().getCharacterStats().getErfahrungspunkte()/
                 this.controller.getAvatar().getCharacterStats().calcFullLevelEp(this.controller.getAvatar()
                 .getCharacterStats().getLevel()));
+        this.statusLabel.setText(this.controller.getSpielfeld().getStatusText());
     }
 
     /**

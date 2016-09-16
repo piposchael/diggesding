@@ -89,6 +89,8 @@ public class Spielfeld extends Observable implements Serializable {
      * Gibt an, in welche Richtung der Avatar schaut.
      */
     private int blickrichtungAvatar;
+    
+    private String statusText;
 
     /**
      * Konstruiert ein Spielfeld. Erstellt einen SpielfeldGenerator und
@@ -262,6 +264,15 @@ public class Spielfeld extends Observable implements Serializable {
         }
     }
     
+    private void pruefeInteraktion(){
+        if(vordergrund[posX][posY+1] == Feld.FELSEN){
+            this.statusText = "Ball hinzugrfügt.";
+            this.avatar.grossenHeiltrankHinzufuegen();
+            setChanged();
+            notifyObservers();
+        }
+    }
+    
     private void wechselKarte(String karte){
         this.karte.setActiveKarte(karte);
         this.vordergrund = this.karte.getVordergrund();
@@ -289,5 +300,9 @@ public class Spielfeld extends Observable implements Serializable {
 
     public int getBlickrichtungAvatar() {
         return blickrichtungAvatar;
+    }
+    
+    public String getStatusText(){
+        return statusText;
     }
 }
